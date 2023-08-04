@@ -1,0 +1,67 @@
+﻿@page "/portuguese"
+
+@inject HttpClient Http
+@inject List<SongDb> songs
+
+<PageTitle>Index</PageTitle>
+
+@if(songs == null)
+{
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Interprete</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var song in portugueseSongs)
+            {
+                <tr>
+                    <td>@song.SingerName</td>
+                    <td>@song.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<SongDb>? portugueseSongs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        portugueseSongs = await Http.GetFromJsonAsync<List<SongDb>>($"api/songbook/language/{Language.Portuguese}");
+
+        await base.OnInitializedAsync();
+    }
+
+    public string GetLanguageName(Language language)
+    {
+        switch (language)
+        {
+            case Language.Portuguese:
+                return "Português";
+            case Language.Brazil:
+                return "Brasileiro";            
+            case Language.African:
+                return "Africano";            
+            case Language.Spanish:
+                return "Espanhol";
+            case Language.Italian:
+                return "Italiano";
+            case Language.French:
+                return "Francês";
+            case Language.German:
+                return "Alemão";
+            case Language.English:
+                return "Inglês";
+            default:
+                return "Error";
+        }
+    }
+}

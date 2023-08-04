@@ -1,0 +1,82 @@
+﻿@inject List<SongDb> songs
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Music4Life SongBook</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="portuguese">
+                <span class="oi oi-home" aria-hidden="true"></span> Português
+            </NavLink>
+        </div>
+                <div class="nav-item px-3">
+            <NavLink class="nav-link" href="brazilian">
+                <span class="oi oi-home" aria-hidden="true"></span> Brasileiro
+            </NavLink>
+        </div>
+        <div class="nav-item px-3 @(DisableNavLink())">
+            <NavLink class="nav-link" href="african" >
+                <span class="oi oi-home" aria-hidden="true"></span> Africano
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="spanish">
+                <span class="oi oi-home" aria-hidden="true"></span> Espanhol
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="italian">
+                <span class="oi oi-home" aria-hidden="true"></span> Italiano
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="french">
+                <span class="oi oi-home" aria-hidden="true"></span> Francês
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="german">
+                <span class="oi oi-home" aria-hidden="true"></span> Alemão
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="english">
+                <span class="oi oi-home" aria-hidden="true"></span> Inglês
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public string DisableNavLink()
+    {
+        return songs == null || songs.Count <= 0 ? "disabled" : "";
+    }
+}
+
+<style>
+    .disabled {
+        text-decoration:line-through;
+    }
+</style>
