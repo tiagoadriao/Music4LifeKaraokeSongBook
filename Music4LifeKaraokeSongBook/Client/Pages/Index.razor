@@ -1,42 +1,20 @@
 ﻿@page "/"
 
 @inject HttpClient Http
-@inject List<SongDb> songs
+@inject Songbook songbook
 
 <PageTitle>Index</PageTitle>
 
-@if(songs == null)
-{
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Interprete</th>
-                <th>Nome</th>
-                <th>Linguagem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var song in songs)
-            {
-                <tr>
-                    <td>@song.SingerName</td>
-                    <td>@song.Name</td>
-                    <td>@GetLanguageName(song.Language)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<h1>Lista de Músicas Digital</h1>
 
 
 @code {
 
     protected override async Task OnInitializedAsync()
     {
-        songs = await Http.GetFromJsonAsync<List<SongDb>>("api/songbook");
+        songbook.Songs = await Http.GetFromJsonAsync<List<SongDb>>("api/songbook");
+
+        StateHasChanged();
 
         await base.OnInitializedAsync();
     }
@@ -47,7 +25,7 @@ else
         {
             case Language.Portuguese:
                 return "Português";
-            case Language.Brazil:
+            case Language.Brazilian:
                 return "Brasileiro";            
             case Language.African:
                 return "Africano";            

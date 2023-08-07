@@ -1,11 +1,10 @@
 ﻿@page "/portuguese"
 
-@inject HttpClient Http
-@inject List<SongDb> songs
+<PageTitle>Português</PageTitle>
 
-<PageTitle>Index</PageTitle>
+@inject Songbook globalSongbook
 
-@if(songs == null)
+@if(songbook.Songs == null)
 {
 }
 else
@@ -18,7 +17,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var song in portugueseSongs)
+            @foreach (var song in songbook?.Songs)
             {
                 <tr>
                     <td>@song.SingerName</td>
@@ -31,11 +30,11 @@ else
 
 
 @code {
-    List<SongDb>? portugueseSongs;
+    Songbook? songbook = new();
 
     protected override async Task OnInitializedAsync()
     {
-        portugueseSongs = await Http.GetFromJsonAsync<List<SongDb>>($"api/songbook/language/{Language.Portuguese}");
+        songbook.Songs = globalSongbook.Songs.Where(x => x.Language == Language.Portuguese).ToList();
 
         await base.OnInitializedAsync();
     }
@@ -46,7 +45,7 @@ else
         {
             case Language.Portuguese:
                 return "Português";
-            case Language.Brazil:
+            case Language.Brazilian:
                 return "Brasileiro";            
             case Language.African:
                 return "Africano";            

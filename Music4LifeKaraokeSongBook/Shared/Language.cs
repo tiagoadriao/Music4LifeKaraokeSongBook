@@ -1,7 +1,7 @@
 ﻿public enum Language
 {
     Portuguese = 1,
-    Brazil = 2,
+    Brazilian = 2,
     African = 3,
     Spanish = 4,
     Italian = 5,
