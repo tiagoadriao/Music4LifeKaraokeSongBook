@@ -1,0 +1,85 @@
+﻿@using Microsoft.Extensions.Caching.Memory;
+
+@inherits LayoutComponentBase
+
+@inject IMemoryCache cache
+@inject IJSRuntime jsRuntime
+@inject Songbook songbook
+
+<MudThemeProvider Theme="@mudTheme" @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+<MudDialogProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudText Typo="Typo.h5" Class="ml-3 app-bar-text">Lista de Músicas Digital</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column align-content-center justify-content-center gap-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
+
+    MudTheme mudTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Teal.Default,
+                Secondary = Colors.Teal.Accent4,
+                AppbarBackground = Colors.Teal.Default
+            },
+            PaletteDark = new PaletteDark()
+            {
+                Primary = Colors.Teal.Darken4,
+            }
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {   
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+
+            await GetSongbook();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async Task GetSongbook()
+    {
+        songbook = await cache.GetOrCreateAsync<Songbook>("songBook", async data =>
+         {
+             Songbook result = new();
+
+             data.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+
+             result.Songs = (await jsRuntime.InvokeAsync<SongDb[]>(
+                 "QueryDB",
+                     @"SELECT songs.Id, songs.Name, songs.SingerId, singers.Name as SingerName, songs.Language
+                 FROM music4lifesongbook.Songs AS songs
+                 LEFT JOIN music4lifesongbook.Singers As singers
+                 on singers.Id = songs.SingerId
+                 order by songs.Language, singers.Name, songs.Name"
+             )).ToList();
+
+             return result;
+         });
+
+        StateHasChanged();
+    }
+}
+
+<style>
+    .app-bar-text {
+        font-variant-caps: small-caps;
+    }
+</style>
