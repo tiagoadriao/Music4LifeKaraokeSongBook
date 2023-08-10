@@ -8,12 +8,20 @@ public class SongbookDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Singer>().Property(x => x.Name).HasColumnType("TEXT COLLATE NOCASE");
-        modelBuilder.Entity<Song>().Property(x => x.Name).HasColumnType("TEXT COLLATE NOCASE");
-        //modelBuilder.Entity<Singer>().HasKey(x => new { x.Id, x.Name });
         base.OnModelCreating(modelBuilder);
-    }
 
+        modelBuilder.Entity<Singer>(e =>
+        {
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Name).IsRequired();
+        });
+
+        modelBuilder.Entity<Song>(e =>
+        {
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Name).IsRequired();
+        });
+    }
 
     public DbSet<Song> Songs { get; set; }
     public DbSet<Singer> Singers { get; set; }

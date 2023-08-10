@@ -10,24 +10,26 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Music4LifeKaraokeSongBook.Server.Migrations
 {
     [DbContext(typeof(SongbookDbContext))]
-    [Migration("20230804120402_Initial")]
+    [Migration("20230809092958_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Singer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT COLLATE NOCASE");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -38,20 +40,20 @@ namespace Music4LifeKaraokeSongBook.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateAdded")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Language")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT COLLATE NOCASE");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("SingerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -62,13 +64,11 @@ namespace Music4LifeKaraokeSongBook.Server.Migrations
 
             modelBuilder.Entity("Song", b =>
                 {
-                    b.HasOne("Singer", "Singer")
+                    b.HasOne("Singer", null)
                         .WithMany("Songs")
                         .HasForeignKey("SingerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Singer");
                 });
 
             modelBuilder.Entity("Singer", b =>

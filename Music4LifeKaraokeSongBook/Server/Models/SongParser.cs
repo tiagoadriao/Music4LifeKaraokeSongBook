@@ -1,6 +1,4 @@
-﻿using Music4LifeKaraokeSongBook.Shared;
-
-public class SongParser
+﻿public class SongParser
 {
     public string Singer { get; set; } = null!;
 

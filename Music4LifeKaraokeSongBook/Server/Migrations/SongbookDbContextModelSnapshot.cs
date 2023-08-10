@@ -14,17 +14,19 @@ namespace Music4LifeKaraokeSongBook.Server.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Singer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT COLLATE NOCASE");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -35,37 +37,26 @@ namespace Music4LifeKaraokeSongBook.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateAdded")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Language")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT COLLATE NOCASE");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("SingerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SingerId");
 
                     b.ToTable("Songs");
-                });
-
-            modelBuilder.Entity("Song", b =>
-                {
-                    b.HasOne("Singer", "Singer")
-                        .WithMany("Songs")
-                        .HasForeignKey("SingerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Singer");
                 });
 
             modelBuilder.Entity("Singer", b =>

@@ -8,4 +8,4 @@
     French = 6,
     German = 7,
     English = 8
-}    
+}

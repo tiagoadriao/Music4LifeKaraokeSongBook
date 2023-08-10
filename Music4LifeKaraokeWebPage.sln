@@ -5,11 +5,7 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Music4LifeKaraokeSongBook.Server", "Music4LifeKaraokeSongBook\Server\Music4LifeKaraokeSongBook.Server.csproj", "{5E6594EA-3715-42AF-8046-04804D98E291}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Music4LifeKaraokeSongBook.Client", "Music4LifeKaraokeSongBook\Client\Music4LifeKaraokeSongBook.Client.csproj", "{38CBAE39-82FF-44BA-BC00-6B24C1090B08}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Music4LifeKaraokeSongBook.Shared", "Music4LifeKaraokeSongBook\Shared\Music4LifeKaraokeSongBook.Shared.csproj", "{E87A1529-E7ED-4AAF-A13D-7B9402437032}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M4LKaraokeSongbook", "..\M4LKaraokeSongbook\M4LKaraokeSongbook.csproj", "{22369EA9-BA96-46E9-A139-59144CADC68F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M4LKaraokeSongbook", "M4LKaraokeSongbook\M4LKaraokeSongbook.csproj", "{22369EA9-BA96-46E9-A139-59144CADC68F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +17,6 @@ Global
 		{5E6594EA-3715-42AF-8046-04804D98E291}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E6594EA-3715-42AF-8046-04804D98E291}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E6594EA-3715-42AF-8046-04804D98E291}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38CBAE39-82FF-44BA-BC00-6B24C1090B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38CBAE39-82FF-44BA-BC00-6B24C1090B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38CBAE39-82FF-44BA-BC00-6B24C1090B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38CBAE39-82FF-44BA-BC00-6B24C1090B08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E87A1529-E7ED-4AAF-A13D-7B9402437032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E87A1529-E7ED-4AAF-A13D-7B9402437032}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E87A1529-E7ED-4AAF-A13D-7B9402437032}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E87A1529-E7ED-4AAF-A13D-7B9402437032}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22369EA9-BA96-46E9-A139-59144CADC68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22369EA9-BA96-46E9-A139-59144CADC68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22369EA9-BA96-46E9-A139-59144CADC68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
