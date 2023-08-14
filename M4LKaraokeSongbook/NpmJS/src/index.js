@@ -1,7 +1,7 @@
 import { connect } from '@planetscale/database'
 
 const config = {
-    host: 'aws.connect.psdb.cloud',
+    host: process.env.DB_HOST,
 
     username: process.env.DB_USERNAME,
 

@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
     resolve: {
@@ -9,10 +10,6 @@ module.exports = {
         }
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-            'process.env.DB_USERNAME': JSON.stringify(process.env.DB_USERNAME),
-            'process.env.DB_PASSWORD': JSON.stringify(process.env.DB_PASSWORD),
-        })
+        new Dotenv({ path: '../.env', })
     ]
 }
