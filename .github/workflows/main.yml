@@ -17,6 +17,11 @@ jobs:
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
+    - name: create env file
+      run: |
+        touch .env
+        echo DB_USERNAME=${{ secrets.DB_USERNAME }} \n DB_PASSWORD: ${{ secrets.DB_PASSWORD }} >> .env
+
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
