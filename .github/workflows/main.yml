@@ -22,7 +22,7 @@ jobs:
     - name: create env file
       run: |
         cd M4LKaraokeSongbook/wwwroot
-        touch.env
+        touch .env
         echo DB_HOST= ${{ secrets.DB_HOST }} >> .env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
