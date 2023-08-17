@@ -19,23 +19,55 @@
 
 <MudCard Class="pa-3">
     <MudCardContent>
-         <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
-            <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Brasileiro" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Africano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Espanhol" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Italiano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Francês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Alemão" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
-            <MudTabPanel Text="Inglês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
-            </MudTabPanel>
+        <MudHidden Breakpoint="Breakpoint.Lg" Invert>
+             <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
+                <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Brasileiro" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Africano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Espanhol" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Italiano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Francês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Alemão" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+                <MudTabPanel Text="Inglês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+                </MudTabPanel>
+            </MudTabs>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert>
+            <MudMenu Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopLeft">
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Portuguese))" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
+                     Português
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Brazilian))" OnClick="@( () => GetSongbookFromLanguage(Language.Brazilian))">
+                     Brasileiro
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.African))" OnClick="@( () => GetSongbookFromLanguage(Language.African))">
+                     Africano
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Spanish))" OnClick="@( () => GetSongbookFromLanguage(Language.Spanish))">
+                     Espanhol
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Italian))" OnClick="@( () => GetSongbookFromLanguage(Language.Italian))">
+                     Italiano
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.French))" OnClick="@( () => GetSongbookFromLanguage(Language.French))">
+                     Francês
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.German))" OnClick="@( () => GetSongbookFromLanguage(Language.German))">
+                     Alemão
+                 </MudMenuItem>
+                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.English))" OnClick="@( () => GetSongbookFromLanguage(Language.English))">
+                     Inglês
+                 </MudMenuItem>
+            </MudMenu>
+        </MudHidden>
 
             <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
             <MudTable 
@@ -63,7 +95,6 @@
                     Não temos essa música. Procura outra...
                 </NoRecordsContent>
             </MudTable>
-        </MudTabs>
     </MudCardContent>
 </MudCard>
 
@@ -76,6 +107,7 @@
 
     private bool loading = true;
     private int activeIndex = 0;
+    private string? selectedLanguage = GetLanguageName(Language.Portuguese);
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,7 +135,6 @@
 
              try
              {
-
                  result.Songs = (await jsRuntime.InvokeAsync<SongDb[]>(
                  "QueryDB", 
                  @"SELECT songs.Id, songs.Name, songs.SingerId, singers.Name as SingerName, songs.Language
@@ -130,6 +161,17 @@
 
     private async Task GetSongbookFromLanguage(Language language = Language.Portuguese)
     {
+        int languageCodeOffset = 1;
+
+        int languageIndex = (int)language - languageCodeOffset;
+
+        if (activeIndex != languageIndex)
+        {
+            activeIndex = languageIndex;
+        }
+
+        selectedLanguage = GetLanguageName(language);
+
         languageSongbook.Songs = songbook?.Songs?.Where(x => x.Language == language).ToList();
 
         StateHasChanged();
