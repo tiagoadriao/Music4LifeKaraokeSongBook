@@ -14,37 +14,56 @@
 <MudCard Class="pa-3">
     <MudCardMedia Image="images/logo.png" Height="100" />
     <MudSpacer />
-    <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="px-3" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
 </MudCard>
 
 
 <MudCard Class="pa-3">
     <MudCardContent>
-        <MudTable 
-            Breakpoint="Breakpoint.None"
-            Items="@songbook.Songs" 
-            Filter="new Func<SongDb, bool>(SearchTableSong)" 
-            GroupBy="@_groupDefinition" 
-            Dense
-            Loading="@loading"
-            LoadingProgressColor="@Color.Primary"
-            GroupHeaderClass="group-header-m4l"
-        >
-            <HeaderContent>
-                <MudTh>Interprete</MudTh>
-                <MudTh>Música</MudTh>
-            </HeaderContent>
-            <GroupHeaderTemplate>
-                <MudTh Class="mud-table-cell-custom-group" colspan="2">@($"{context.Key}")</MudTh>
-            </GroupHeaderTemplate>
-            <RowTemplate>
-                <MudTd></MudTd>
-                <MudTd>@context.Name</MudTd>
-            </RowTemplate>
-            <NoRecordsContent>
-                Não temos essa música. Procura outra...
-            </NoRecordsContent>
-        </MudTable>
+         <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
+            <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Brasileiro" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Africano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Espanhol" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Italiano" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Francês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Alemão" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+            <MudTabPanel Text="Inglês" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
+            </MudTabPanel>
+
+            <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
+            <MudTable 
+                Breakpoint="Breakpoint.None"
+                Items="@languageSongbook.Songs" 
+                Filter="new Func<SongDb, bool>(SearchTableSong)" 
+                GroupBy="@_groupDefinition" 
+                Dense
+                Loading="@loading"
+                LoadingProgressColor="@Color.Primary"
+                GroupHeaderClass="group-header-m4l"
+            >
+                <HeaderContent>
+                    <MudTh>Interprete</MudTh>
+                    <MudTh>Música</MudTh>
+                </HeaderContent>
+                <GroupHeaderTemplate>
+                    <MudTh Class="mud-table-cell-custom-group" colspan="2">@($"{context.Key}")</MudTh>
+                </GroupHeaderTemplate>
+                <RowTemplate>
+                    <MudTd></MudTd>
+                    <MudTd>@context.Name</MudTd>
+                </RowTemplate>
+                <NoRecordsContent>
+                    Não temos essa música. Procura outra...
+                </NoRecordsContent>
+            </MudTable>
+        </MudTabs>
     </MudCardContent>
 </MudCard>
 
@@ -53,7 +72,10 @@
     private string songFilter = null!;
     private IEnumerable<SongDb> songbookSearched = new List<SongDb>();
 
+    private Songbook languageSongbook = new();
+
     private bool loading = true;
+    private int activeIndex = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,6 +87,7 @@
         if (firstRender)
         {
             await GetSongbook();
+            await GetSongbookFromLanguage();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -97,10 +120,17 @@
              {
                  data.AbsoluteExpirationRelativeToNow = TimeSpan.Zero;
                  return result;
-            }
+             }
          });
 
         loading = false;
+
+        StateHasChanged();
+    }
+
+    private async Task GetSongbookFromLanguage(Language language = Language.Portuguese)
+    {
+        languageSongbook.Songs = songbook?.Songs?.Where(x => x.Language == language).ToList();
 
         StateHasChanged();
     }
@@ -187,5 +217,10 @@
     .group-header-m4l *, th {
             font-size: 1.15rem !important;
             font-variant-caps: all-small-caps;
-    } 
+    }
+    
+    td {
+        font-size: 1.1rem !important;
+        font-variant-caps: all-small-caps;
+    }
 </style>
