@@ -17,7 +17,7 @@
 
 <MudCard Class="pa-3">
     <MudCardContent>
-        <MudHidden Breakpoint="Breakpoint.Lg" Invert>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert>
              <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
                 <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
                 </MudTabPanel>
@@ -38,8 +38,8 @@
             </MudTabs>
         </MudHidden>
 
-        <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert>
-            <MudMenu Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopLeft">
+         <MudHidden Breakpoint="Breakpoint.Xs" Invert>
+            <MudMenu Class="d-flex justify-content-end w-100" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
                  <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Portuguese))" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
                      Português
                  </MudMenuItem>
@@ -77,6 +77,8 @@
                 Loading="@loading"
                 LoadingProgressColor="@Color.Primary"
                 GroupHeaderClass="group-header-m4l"
+                HeaderClass="header-m4l"
+                FooterClass="mud-table-pagination-toolbar__m4l"
             >
                 <HeaderContent>
                     <MudTh>Interprete</MudTh>
@@ -92,6 +94,9 @@
                 <NoRecordsContent>
                     Não temos essa música. Procura outra...
                 </NoRecordsContent>
+                <PagerContent>
+                    <M4LKaraokeSongbook.MudTablePager Class="mud-table-pager-m4l" PageSizeOptions="new int[] { 25, 50, 100 }" HorizontalAlignment="HorizontalAlignment.Center" RowsPerPageString="Músicas por página:" InfoFormat="{first_item}-{last_item} Total:{all_items}" />
+                </PagerContent>
             </MudTable>
     </MudCardContent>
 </MudCard>
@@ -249,18 +254,43 @@
 }
 
 <style>
-    .group-header-m4l {
-        font-size: 2rem !important;
+    .group-header-m4l * {
         background-color: var(--mud-palette-background-grey) !important;
+        font-size: 1.15rem !important;
+        font-variant-caps: all-small-caps;
     }
 
-    .group-header-m4l *, th {
-            font-size: 1.15rem !important;
-            font-variant-caps: all-small-caps;
+    .header-m4l * {
+        background-color: var(--mud-palette-primary) !important;
+        color: var(--mud-palette-dark-text) !important;
+        font-weight: 900;
+        line-height: 1.5rem;
+        font-variant-caps: all-small-caps;
+        font-size: 1.35rem !important;
     }
     
     td {
+        font-weight: 300 !important;
         font-size: 1.1rem !important;
         font-variant-caps: all-small-caps;
     }
+
+    .language-selector {
+        width: 100%;
+    }
+
+    .mud-table-pager-m4l {
+        justify-content: space-between;
+    }
+
+
+    @@media (max-width: 600px) {
+
+        .mud-table-pagination-toolbar {
+    
+           height: fit-content;
+           flex-wrap: wrap;
+        }
+    }
+    
 </style>
