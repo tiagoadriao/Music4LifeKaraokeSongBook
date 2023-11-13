@@ -9,14 +9,14 @@
 
 @inject IJSRuntime jsRuntime
 
-<MudCard Class="pa-3">
+<MudCard Class="pa-1">
     <MudCardMedia Image="images/logo.png" Height="100" />
     <MudSpacer />
 </MudCard>
 
 
-<MudCard Class="pa-3">
-    <MudCardContent>
+<MudCard Class="pa-1">
+    <MudCardContent Class="pa-1">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert>
              <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
                 <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
@@ -39,7 +39,9 @@
         </MudHidden>
 
          <MudHidden Breakpoint="Breakpoint.Xs" Invert>
-            <MudMenu Class="d-flex justify-content-end w-100" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
+             <div class="d-flex justify-content-end align-items-center gap-3">
+            <MudIcon Icon="@Icons.Material.Filled.Translate" Size="Size.Large" Color="Color.Primary"></MudIcon>
+            <MudMenu Class="d-flex justify-content-end" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
                  <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Portuguese))" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
                      Português
                  </MudMenuItem>
@@ -65,6 +67,7 @@
                      Inglês
                  </MudMenuItem>
             </MudMenu>
+             </div>
         </MudHidden>
 
             <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
