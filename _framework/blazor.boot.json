@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "M4LKaraokeSongbook.dll": "sha256-90pJREQyzN12EGci7Zvul6FSiNSvJ6r+yHBufEF2Udw=",
+      "M4LKaraokeSongbook.dll": "sha256-WxcLDFGQ0Z3l1WnQ14bS3I3Cj5vY3odimsUYEKmtUbs=",
       "Microsoft.AspNetCore.Components.dll": "sha256-N8TSeHVz1s\/0n95DwUr4SAanPruoAX\/fKEQL8J4iPpI=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-x1r2SEfZbQdWL\/jJF9zLxxKodcsDOGrgMb6HJC9fZkY=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-RnTfYyCoKRxnK\/vaRffhpYmsEDOCNUhExfbqyKfJhLs=",
