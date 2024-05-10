@@ -104,7 +104,7 @@
     </MudCardContent>
 </MudCard>
 
-    @code {
+@code {
     private SongDb songSearch = null!;
     private string songFilter = null!;
     private IEnumerable<SongDb> songbookSearched = new List<SongDb>();
@@ -141,21 +141,40 @@
 
              try
              {
-                 result.Songs = (await jsRuntime.InvokeAsync<SongDb[]>(
-                 "QueryDB", 
-                 @"SELECT songs.Id, songs.Name, songs.SingerId, singers.Name as SingerName, songs.Language
-                 FROM music4lifesongbook.Songs AS songs
-                 LEFT JOIN music4lifesongbook.Singers As singers
-                 on singers.Id = songs.SingerId
-                 order by songs.Language, singers.Name, songs.Name"
-             )).ToList();
+                 List<Song> songs = (await jsRuntime.InvokeAsync<Song[]>("GetSongs")).ToList();
+                 List<Singer> singers = (await jsRuntime.InvokeAsync<Singer[]>("GetSingers")).ToList();
+
+                 if (singers != null && songs != null)
+                 {
+                     result.Songs =
+                        (from song in songs
+                        join singer in singers on song.SingerId equals singer.Id
+                        orderby song.Language, singer.Name, song.Name
+                        select new SongDb(
+                            song.Id,
+                            song.Name,
+                            song.SingerId,
+                            singer.Name,
+                            song.Language
+                        )).ToList();
+                 }
+
+                 // result.Songs = (await jsRuntime.InvokeAsync<SongDb[]>(
+                 // "QueryDB", 
+                 // @"SELECT songs.Id, songs.Name, songs.SingerId, singers.Name as SingerName, songs.Language
+                 // FROM music4lifesongbook.Songs AS songs
+                 // LEFT JOIN music4lifesongbook.Singers As singers
+                 // on singers.Id = songs.SingerId
+                 // order by songs.Language, singers.Name, songs.Name"
+                 //    )).ToList();
 
                  return result;
 
              }
-             catch (Exception)
+             catch (Exception e)
              {
-                 data.AbsoluteExpirationRelativeToNow = TimeSpan.Zero;
+                 System.Diagnostics.Debug.WriteLine(e);
+                 data.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1);
                  return result;
              }
          });

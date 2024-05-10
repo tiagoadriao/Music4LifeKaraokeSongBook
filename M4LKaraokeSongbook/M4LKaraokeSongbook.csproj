@@ -12,7 +12,15 @@
 	</Target>
 
 	<ItemGroup>
+	  <Content Remove="wwwroot\js\index.js" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Include=".env" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\js\index.js" />
 	</ItemGroup>
 
   <ItemGroup>
