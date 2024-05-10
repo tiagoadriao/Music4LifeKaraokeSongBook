@@ -20,7 +20,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="wwwroot\js\index.js" />
+	  <None Include="wwwroot\js\index.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
   <ItemGroup>
