@@ -1,7 +1,7 @@
 {
   "entryAssembly": "M4LKaraokeSongbook",
   "resources": {
-    "hash": "sha256-NgiCP7D3wlv7kCyaK6YXLKvxz68fQhHwmKyUOUNfXbw=",
+    "hash": "sha256-1mgkLvb/Qtr7HuC5hl6MMoAxN2byQ9eHgswcQK0HrZs=",
     "runtime": {
       "dotnet.7.0.18.yczjibhkds.js": "sha256-lsqy0PQ8nf1/0sSlLGe3Kfwi8V0Q1QzVy5+AqtJ3cfU=",
       "dotnet.timezones.blat": "sha256-aPcvvHoFVwCzeRxTOvMTcrI2l2HKJO0sjSN7IF10LUQ=",
@@ -11,7 +11,7 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "M4LKaraokeSongbook.dll": "sha256-GnaVg3W6ruOCDZKTDwC18ZrEnKtF1np16fIPQUanKXE=",
+      "M4LKaraokeSongbook.dll": "sha256-6G1DLvXuW4+RZifBiU5JvUQo5VK+NKytLG4RDeojwRM=",
       "Microsoft.AspNetCore.Components.dll": "sha256-N8TSeHVz1s/0n95DwUr4SAanPruoAX/fKEQL8J4iPpI=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-x1r2SEfZbQdWL/jJF9zLxxKodcsDOGrgMb6HJC9fZkY=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-RnTfYyCoKRxnK/vaRffhpYmsEDOCNUhExfbqyKfJhLs=",

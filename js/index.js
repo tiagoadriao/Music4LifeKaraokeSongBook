@@ -16,6 +16,10 @@
 //    return results.rows;
 //}
 
+window.scrollToTop = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 window.GetSongs = function () {
     let songbook = [
         {
