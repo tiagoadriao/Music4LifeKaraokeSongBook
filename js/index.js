@@ -42189,6 +42189,83 @@ window.GetSongs = function () {
             "SingerId": 2224,
             "Language": 8,
             "DateAdded": "2023-08-09T12:07:41.483225"
+        },
+        {
+            "Id": 6025,
+            "SingerId": 128,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Loucamente [Feat. Los Romeros]"
+        },
+        {
+            "Id": 6026,
+            "SingerId": 103,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "N\u00e3o Me Importo"
+        },
+        {
+            "Id": 6027,
+            "SingerId": 2225,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Nosso Quadro"
+        },
+        {
+            "Id": 6028,
+            "SingerId": 264,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Amigo (V. Baile)"
+        },
+        {
+            "Id": 6029,
+            "SingerId": 2226,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Aceita Que D\u00f3i Menos"
+        },
+        {
+            "Id": 6030,
+            "SingerId": 2227,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Na Escola"
+        },
+        {
+            "Id": 6031,
+            "SingerId": 320,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Sonhei Que Ia Casar"
+        },
+        {
+            "Id": 6032,
+            "SingerId": 2228,
+            "Language": 3,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Kamporta"
+        },
+        {
+            "Id": 6033,
+            "SingerId": 808,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Largo Da Igreja"
+        },
+        {
+            "Id": 6034,
+            "SingerId": 359,
+            "Language": 1,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Mix: Fazer Com Ela - Vem Dan\u00e7ar No Ro\u00e7a Ro\u00e7a - Aiu\u00e9 do Ro\u00e7a Ro\u00e7a"
+        },
+        {
+            "Id": 6035,
+            "SingerId": 774,
+            "Language": 3,
+            "DateAdded": "2024-05-15T17:00:00.000000",
+            "Name": "Lua Nha Testemunha [Feat. Lura]"
         }
     ]
 
@@ -51092,6 +51169,22 @@ window.GetSingers = function () {
         {
             "Id": 2224,
             "Name": "ZZ Top"
+        },
+        {
+            "Id": 2225,
+            "Name": "Ana Castela"
+        },
+        {
+            "Id": 2226,
+            "Name": "Duo Contakto"
+        },
+        {
+            "Id": 2227,
+            "Name": "Quatro e Meia"
+        },
+        {
+            "Id": 2228,
+            "Name": "Fil Barros"
         }
     ]
 
