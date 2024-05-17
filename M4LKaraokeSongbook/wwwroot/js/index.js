@@ -3187,20 +3187,6 @@ window.GetSongs = function () {
             "DateAdded": "2023-08-09T11:58:14.551240"
         },
         {
-            "Id": 453,
-            "Name": "Beijo Gelado (Remix)",
-            "SingerId": 123,
-            "Language": 1,
-            "DateAdded": "2023-08-09T11:58:14.551250"
-        },
-        {
-            "Id": 454,
-            "Name": "N\u00e3o Digam Ao Fado",
-            "SingerId": 123,
-            "Language": 1,
-            "DateAdded": "2023-08-09T11:58:14.551253"
-        },
-        {
             "Id": 455,
             "Name": "O Emigrante",
             "SingerId": 124,
