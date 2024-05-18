@@ -9508,13 +9508,6 @@ window.GetSongs = function () {
             "DateAdded": "2023-08-09T11:59:34.482324"
         },
         {
-            "Id": 1358,
-            "Name": "O Tempo",
-            "SingerId": 312,
-            "Language": 1,
-            "DateAdded": "2023-08-09T11:59:34.482357"
-        },
-        {
             "Id": 1359,
             "Name": "Fala Da Mulher Sozinha",
             "SingerId": 313,
@@ -9842,13 +9835,6 @@ window.GetSongs = function () {
             "SingerId": 327,
             "Language": 1,
             "DateAdded": "2023-08-09T11:59:39.167523"
-        },
-        {
-            "Id": 1406,
-            "Name": "O Que Tu D\u00e1s",
-            "SingerId": 327,
-            "Language": 1,
-            "DateAdded": "2023-08-09T11:59:39.167556"
         },
         {
             "Id": 1407,
@@ -15099,13 +15085,6 @@ window.GetSongs = function () {
             "SingerId": 506,
             "Language": 1,
             "DateAdded": "2023-08-09T12:00:42.758966"
-        },
-        {
-            "Id": 2157,
-            "Name": "O Buraco",
-            "SingerId": 506,
-            "Language": 1,
-            "DateAdded": "2023-08-09T12:00:42.759008"
         },
         {
             "Id": 2158,
@@ -22512,13 +22491,6 @@ window.GetSongs = function () {
             "SingerId": 940,
             "Language": 4,
             "DateAdded": "2023-08-09T12:02:36.349027"
-        },
-        {
-            "Id": 3216,
-            "Name": "La Bamba",
-            "SingerId": 940,
-            "Language": 4,
-            "DateAdded": "2023-08-09T12:02:36.349059"
         },
         {
             "Id": 3217,
