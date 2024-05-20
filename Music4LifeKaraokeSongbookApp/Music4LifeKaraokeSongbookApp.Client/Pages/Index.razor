@@ -1,13 +1,12 @@
 ﻿@page "/"
-@using M4LKaraokeSongbook.Services
-@using Microsoft.Extensions.Caching.Memory;
+@rendermode InteractiveAuto
+@attribute [StreamRendering]
+
 @using System.Text;
 @using System.Globalization;
+@using Music4LifeKaraokeSongbookApp.Client.Services
 
-@inject IMemoryCache cache
-@inject Songbook songbook
-@inject DbHandler dbHandler
-
+@inject IMusic4LifeSongbookService music4LifeSongbookService
 @inject IJSRuntime jsRuntime
 
 <MudCard Class="pa-1">
@@ -100,7 +99,12 @@
                     Não temos essa música. Procura outra...
                 </NoRecordsContent>
                 <PagerContent>
-                    <M4LKaraokeSongbook.MudTablePager Class="mud-table-pager-m4l" PageSizeOptions="new int[] { 25, 50, 100 }" HorizontalAlignment="HorizontalAlignment.Center" RowsPerPageString="Músicas por página:" InfoFormat="{first_item}-{last_item} Total:{all_items}" />
+                    <M4LKaraokeSongbook.MudTablePager 
+                        Class="mud-table-pager-m4l"
+                        PageSizeOptions="new int[] { 25, 50, 100 }"
+                        HorizontalAlignment="HorizontalAlignment.Center" 
+                        RowsPerPageString="Músicas por página:" 
+                        InfoFormat="{first_item}-{last_item} Total:{all_items}" />
                 </PagerContent>
             </MudTable>
     </MudCardContent>
@@ -111,6 +115,7 @@
     private string songFilter = null!;
     private IEnumerable<SongDb> songbookSearched = new List<SongDb>();
 
+    private Songbook songbook = new();
     private Songbook languageSongbook = new();
 
     private bool loading = true;
@@ -127,7 +132,6 @@
         if (firstRender)
         {
             await GetSongbook();
-            await GetSongbookFromLanguage();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -135,60 +139,16 @@
 
     public async Task GetSongbook()
     {
-        songbook = await cache.GetOrCreateAsync<Songbook>("songBook", async data =>
-         {
-             Songbook result = new();
+        songbook = (await music4LifeSongbookService.GetSongbookAsync())!;
 
-             // result = dbHandler.GetSongs();
-
-             data.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
-
-             try
-             {
-                 List<Song> songs = (await jsRuntime.InvokeAsync<Song[]>("GetSongs")).ToList();
-                 List<Singer> singers = (await jsRuntime.InvokeAsync<Singer[]>("GetSingers")).ToList();
-
-                 if (singers != null && songs != null)
-                 {
-                     result.Songs =
-                        (from song in songs
-                        join singer in singers on song.SingerId equals singer.Id
-                        orderby song.Language, singer.Name, song.Name
-                        select new SongDb(
-                            song.Id,
-                            song.Name,
-                            song.SingerId,
-                            singer.Name,
-                            song.Language
-                        )).ToList();
-                 }
-
-                 // result.Songs = (await jsRuntime.InvokeAsync<SongDb[]>(
-                 // "QueryDB", 
-                 // @"SELECT songs.Id, songs.Name, songs.SingerId, singers.Name as SingerName, songs.Language
-                 // FROM music4lifesongbook.Songs AS songs
-                 // LEFT JOIN music4lifesongbook.Singers As singers
-                 // on singers.Id = songs.SingerId
-                 // order by songs.Language, singers.Name, songs.Name"
-                 //    )).ToList();
-
-                 return result;
-
-             }
-             catch (Exception e)
-             {
-                 System.Diagnostics.Debug.WriteLine(e);
-                 data.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1);
-                 return result;
-             }
-         });
+        GetSongbookFromLanguage();
 
         loading = false;
 
         StateHasChanged();
     }
 
-    private async Task GetSongbookFromLanguage(Language language = Language.Portuguese)
+    private void GetSongbookFromLanguage(Language language = Language.Portuguese)
     {
         int languageCodeOffset = 1;
 
@@ -201,7 +161,7 @@
 
         selectedLanguage = GetLanguageName(language);
 
-        languageSongbook.Songs = songbook?.Songs?.Where(x => x.Language == language).ToList();
+        languageSongbook.Songs = songbook?.Songs?.Where(x => x.LanguageId == language).ToList();
 
         StateHasChanged();
     }
@@ -228,7 +188,7 @@
             CompareInfo compareInfo = CultureInfo.CurrentCulture.CompareInfo;
 
             if (string.IsNullOrEmpty(value)) {
-                songbookSearched = songbook.Songs.OrderBy( x => x.Language).ThenBy(x => x.SingerName).ThenBy(x => x.Name);
+                songbookSearched = songbook.Songs.OrderBy( x => x.LanguageId).ThenBy(x => x.SingerName).ThenBy(x => x.Name);
                 return songbookSearched;
             }
 

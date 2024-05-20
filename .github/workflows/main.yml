@@ -32,7 +32,7 @@ jobs:
       uses: actions/setup-dotnet@v3.2.0
       with:
         # Optional SDK version(s) to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x, 3.x, 6.0.2xx
-        dotnet-version: 7
+        dotnet-version: 8
 
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
