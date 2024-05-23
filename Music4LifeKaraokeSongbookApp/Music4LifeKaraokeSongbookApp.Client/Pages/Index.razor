@@ -1,5 +1,4 @@
 ﻿@page "/"
-@rendermode InteractiveAuto
 @attribute [StreamRendering]
 
 @using System.Text;
@@ -72,13 +71,14 @@
 
             <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
             <MudTable 
+                @ref="@_songbookTable"
                 Breakpoint="Breakpoint.None"
                 Items="@languageSongbook.Songs" 
                 Filter="new Func<SongDb, bool>(SearchTableSong)" 
                 GroupBy="@_groupDefinition" 
                 Dense
                 Loading="@loading"
-                LoadingProgressColor="@Color.Primary"
+                LoadingProgressColor="@Color.Warning"
                 GroupHeaderClass="group-header-m4l"
                 HeaderClass="header-m4l"
                 FooterClass="mud-table-pagination-toolbar__m4l"
@@ -98,6 +98,9 @@
                 <NoRecordsContent>
                     Não temos essa música. Procura outra...
                 </NoRecordsContent>
+                <LoadingContent>
+                    A carregar...
+                </LoadingContent>
                 <PagerContent>
                     <M4LKaraokeSongbook.MudTablePager 
                         Class="mud-table-pager-m4l"
@@ -118,9 +121,12 @@
     private Songbook songbook = new();
     private Songbook languageSongbook = new();
 
+    private MudTableBase _songbookTable;
+
     private bool loading = true;
     private int activeIndex = 0;
     private string? selectedLanguage = GetLanguageName(Language.Portuguese);
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -162,6 +168,8 @@
         selectedLanguage = GetLanguageName(language);
 
         languageSongbook.Songs = songbook?.Songs?.Where(x => x.LanguageId == language).ToList();
+
+        _songbookTable.NavigateTo(Page.First);
 
         StateHasChanged();
     }
