@@ -5,6 +5,9 @@ using Music4LifeKaraokeSongbookApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add MudBlazor services
+builder.Services.AddMudServices();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -13,8 +16,6 @@ builder.Services.AddRazorComponents()
 builder.Services.AddTransient<IMusic4LifeSongbookService, Music4LifeSongbookService>();
 
 builder.Services.AddMemoryCache();
-
-builder.Services.AddMudServices();
 
 var app = builder.Build();
 
@@ -36,7 +37,6 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Music4LifeKaraokeSongbookApp.Client._Imports).Assembly);
 

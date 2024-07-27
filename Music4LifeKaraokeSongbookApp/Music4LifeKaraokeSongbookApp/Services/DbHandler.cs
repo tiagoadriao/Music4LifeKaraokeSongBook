@@ -17,6 +17,8 @@ namespace M4LKaraokeSongbook.Services
                 {
                     songbook = await _cache.GetOrCreateAsync("Songbook", async (data) =>
                     {
+                        data.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
+
                         using SqlConnection connection = new(_configuration.GetConnectionString("DefaultConnection"));
 
                         songbook.Songs = (await connection.QueryAsync<SongDb>(

@@ -1,5 +1,4 @@
 ﻿@page "/"
-@attribute [StreamRendering]
 
 @using System.Text;
 @using System.Globalization;
@@ -41,35 +40,46 @@
              <div class="d-flex justify-content-end align-items-center gap-3">
             <MudIcon Icon="@Icons.Material.Filled.Translate" Size="Size.Large" Color="Color.Primary"></MudIcon>
             <MudMenu Class="d-flex justify-content-end" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Portuguese))" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
+                 <MudMenuItem Class="language-selector" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
                      Português
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Brazilian))" OnClick="@( () => GetSongbookFromLanguage(Language.Brazilian))">
+                 <MudMenuItem Class="language-selector" OnClick="@( () => GetSongbookFromLanguage(Language.Brazilian))">
                      Brasileiro
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.African))" OnClick="@( () => GetSongbookFromLanguage(Language.African))">
+                 <MudMenuItem Class="language-selector"  OnClick="@( () => GetSongbookFromLanguage(Language.African))">
                      Africano
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Spanish))" OnClick="@( () => GetSongbookFromLanguage(Language.Spanish))">
+                 <MudMenuItem Class="language-selector"  OnClick="@( () => GetSongbookFromLanguage(Language.Spanish))">
                      Espanhol
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.Italian))" OnClick="@( () => GetSongbookFromLanguage(Language.Italian))">
+                 <MudMenuItem Class="language-selector"  OnClick="@( () => GetSongbookFromLanguage(Language.Italian))">
                      Italiano
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.French))" OnClick="@( () => GetSongbookFromLanguage(Language.French))">
+                 <MudMenuItem Class="language-selector" OnClick="@( () => GetSongbookFromLanguage(Language.French))">
                      Francês
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.German))" OnClick="@( () => GetSongbookFromLanguage(Language.German))">
+                 <MudMenuItem Class="language-selector"  OnClick="@( () => GetSongbookFromLanguage(Language.German))">
                      Alemão
                  </MudMenuItem>
-                 <MudMenuItem Class="language-selector" OnTouch="@(() => GetSongbookFromLanguage(Language.English))" OnClick="@( () => GetSongbookFromLanguage(Language.English))">
+                 <MudMenuItem Class="language-selector"  OnClick="@( () => GetSongbookFromLanguage(Language.English))">
                      Inglês
                  </MudMenuItem>
             </MudMenu>
              </div>
         </MudHidden>
 
-            <MudTextField @bind-Value="songFilter" Placeholder="Pesquisar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" HelperTextOnFocus HelperText="Pesquisa pelo nome da música ou do interprete" DebounceInterval="750" Clearable></MudTextField>
+            <MudTextField 
+                @bind-Value="songFilter"
+                Placeholder="Pesquisar"
+                Class="mt-8 mb-4"
+                Typo="Typo.h6"
+                Adornment="Adornment.Start"
+                AdornmentIcon="@Icons.Material.Filled.Search"
+                IconSize="Size.Large" Variant="Variant.Outlined"
+                HelperTextOnFocus
+                HelperText="Pesquisa pelo nome da música ou do interprete"
+                DebounceInterval="750"
+                Clearable />
             <MudTable 
                 @ref="@_songbookTable"
                 Breakpoint="Breakpoint.None"
@@ -114,14 +124,13 @@
 </MudCard>
 
 @code {
-    private SongDb songSearch = null!;
     private string songFilter = null!;
-    private IEnumerable<SongDb> songbookSearched = new List<SongDb>();
+    private IEnumerable<SongDb>? songbookSearched = [];
 
     private Songbook songbook = new();
     private Songbook languageSongbook = new();
 
-    private MudTableBase _songbookTable;
+    private MudTableBase? _songbookTable = null;
 
     private bool loading = true;
     private int activeIndex = 0;

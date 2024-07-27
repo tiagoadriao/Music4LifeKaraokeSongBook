@@ -25,7 +25,7 @@ namespace M4LKaraokeSongbook
 
         [CascadingParameter(Name = "RightToLeft")] public bool RightToLeft { get; set; }
 
-        [CascadingParameter] public TableContext Context { get; set; }
+        [CascadingParameter] public TableContext? Context { get; set; }
 
         /// <summary>
         /// Set true to hide the part of the pager which allows to change the page size.
@@ -81,8 +81,8 @@ namespace M4LKaraokeSongbook
                 return Table == null
                     ? "Table==null"
                     : InfoFormat
-                        .Replace("{first_item}", $"{(filteredItemsCount == 0 ? 0 : Table?.CurrentPage * Table.RowsPerPage + 1)}")
-                        .Replace("{last_item}", $"{Math.Min((Table.CurrentPage + 1) * Table.RowsPerPage, filteredItemsCount)}")
+                        .Replace("{first_item}", $"{(filteredItemsCount == 0 ? 0 : Table?.CurrentPage * Table?.RowsPerPage + 1)}")
+                        .Replace("{last_item}", $"{Math.Min((Table?.CurrentPage + 1) * Table?.RowsPerPage ?? 0, filteredItemsCount)}")
                         .Replace("{all_items}", $"{filteredItemsCount}");
             }
         }
@@ -118,7 +118,7 @@ namespace M4LKaraokeSongbook
 
         private bool ForwardButtonsDisabled => Table == null ? false : (Table.CurrentPage + 1) * Table.RowsPerPage >= Table.GetFilteredItemsCount();
 
-        public MudTableBase Table => Context?.Table;
+        public MudTableBase? Table => Context?.Table;
 
         protected override void OnInitialized()
         {
