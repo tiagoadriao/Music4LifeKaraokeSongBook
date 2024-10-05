@@ -69,7 +69,7 @@ namespace M4LKaraokeSongbook
         /// <summary>
         /// Defines the text shown in the items per page dropdown when a user provides int.MaxValue as an option
         /// </summary>
-        [Parameter] public string AllItemsText { get; set; } = "All";
+        [Parameter] public string AllItemsText { get; set; } = "Todas";
 
         private string Info
         {
