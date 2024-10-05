@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -22,6 +22,7 @@
 @code {
     private bool _isDarkMode;
     private MudTheme? _theme = null;
+    private MudThemeProvider _mudThemeProvider;
 
     protected override void OnInitialized()
     {
@@ -33,6 +34,15 @@
                 PaletteDark = _paletteDark,
                 LayoutProperties = new()
             };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
     }
 
     private readonly PaletteLight _paletteLight = new()
