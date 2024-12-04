@@ -16,7 +16,7 @@
 <MudCard Class="pa-1">
     <MudCardContent Class="pa-1">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert>
-             <MudTabs AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
+             <MudTabs Centered AlwaysShowScrollButtons Rounded @bind-ActivePanelIndex="activeIndex">
                 <MudTabPanel Text="Português" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
                 </MudTabPanel>
                 <MudTabPanel Text="Brasileiro" OnClick="@( () => GetSongbookFromLanguage((Language)(activeIndex + 1)))">
@@ -38,8 +38,9 @@
 
          <MudHidden Breakpoint="Breakpoint.Xs" Invert>
              <div class="d-flex justify-content-end align-items-center gap-3">
-            <MudIcon Icon="@Icons.Material.Filled.Translate" Size="Size.Large" Color="Color.Primary"></MudIcon>
-            <MudMenu Class="d-flex justify-content-end" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
+            <!-- <MudIcon Icon="@Icons.Material.Filled.Translate" Size="Size.Large" Color="Color.Primary"></MudIcon> -->
+                <MudText Typo="Typo.h6">Músicas em </MudText>
+            <MudMenu FullWidth Class="d-flex justify-content-end" Label="@selectedLanguage" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Outlined" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopLeft">
                  <MudMenuItem Class="language-selector" OnClick="@( () => GetSongbookFromLanguage(Language.Portuguese))">
                      Português
                  </MudMenuItem>

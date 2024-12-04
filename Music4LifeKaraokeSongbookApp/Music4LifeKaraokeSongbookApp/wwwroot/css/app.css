@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-variant-caps: all-small-caps;
 }
 
 h1:focus {
