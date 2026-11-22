@@ -1,15 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <PublishTrimmed>false</PublishTrimmed>
+	  <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+	  <UserSecretsId>b817d0c3-fee9-4b1d-84e4-789c65de0a17</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\js\index.js" />
-  </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\images\logo.png" />
@@ -25,17 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\index.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Music4LifeKaraokeSongbookApp.Client\Music4LifeKaraokeSongbookApp.Client.csproj" />
-    <PackageReference Include="Dapper" Version="2.1.100" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="11.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
-    <PackageReference Include="System.Text.Json" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
