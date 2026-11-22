@@ -1,11 +1,12 @@
 ﻿@page "/"
 
-@using System.Text;
 @using System.Globalization;
 @using Music4LifeKaraokeSongbookApp.Client.Services
 
 @inject IMusic4LifeSongbookService music4LifeSongbookService
+@inject IAskDJHandler askDJHandler
 @inject IJSRuntime jsRuntime
+@inject ISnackbar snackbar
 
 <MudCard Class="pa-1">
     <MudCardMedia Image="images/logo.png" Height="100" />
@@ -98,13 +99,19 @@
                 <HeaderContent>
                     <MudTh>Interprete</MudTh>
                     <MudTh>Música</MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
                 <GroupHeaderTemplate>
-                    <MudTh Class="mud-table-cell-custom-group" colspan="2">@($"{context.Key}")</MudTh>
+                    <MudTh Class="mud-table-cell-custom-group" colspan="3">@($"{context.Key}")</MudTh>
                 </GroupHeaderTemplate>
                 <RowTemplate>
                     <MudTd></MudTd>
                     <MudTd>@context.Name</MudTd>
+                    <MudTd>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@( () => OpenRequestDialog(context))" Disabled="@openingRequestDialog">
+                            Pedir Música
+                        </MudButton>
+                    </MudTd>
                 </RowTemplate>
                 <NoRecordsContent>
                     Não temos essa música. Procura outra...
@@ -125,9 +132,38 @@
     </MudCardContent>
 </MudCard>
 
+<MudDialog @bind-Visible="requestDialogVisible" Options="requestDialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Pedir Música</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body1">@selectedSong?.SingerName - @selectedSong?.Name</MudText>
+        @if (selectedSong is not null && $"{selectedSong.SingerName} - {selectedSong.Name}".Length > AskDJRequest.MaxMessageLength)
+        {
+            <MudText Color="Color.Error">O resumo da música não pode exceder 500 caracteres.</MudText>
+        }
+        <MudTextField @bind-Value="requesterName" Label="O teu nome" Variant="Variant.Outlined"
+                      Class="mt-4" Immediate="true" Disabled="@requestInProgress" Required="true"
+                      MaxLength="@AskDJRequest.MaxNameLength"
+                      Error="@(requesterName.Length > AskDJRequest.MaxNameLength)"
+                      ErrorText="O nome não pode exceder 100 caracteres." />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseRequestDialog" Disabled="@requestInProgress">Fechar</MudButton>
+        <MudButton OnClick="ConfirmRequest" Color="Color.Primary" Variant="Variant.Filled"
+                   Disabled="@(requestInProgress || !IsRequestValid())">Confirmar</MudButton>
+    </DialogActions>
+</MudDialog>
+
 @code {
     private string songFilter = null!;
     private IEnumerable<SongDb>? songbookSearched = [];
+    private readonly DialogOptions requestDialogOptions = new() { BackdropClick = false, CloseOnEscapeKey = false };
+    private SongDb? selectedSong;
+    private string requesterName = string.Empty;
+    private bool requestDialogVisible;
+    private bool openingRequestDialog;
+    private bool requestInProgress;
 
     private Songbook songbook = new();
     private Songbook languageSongbook = new();
@@ -158,14 +194,10 @@
     {
         songbook = (await music4LifeSongbookService.GetSongbookAsync())!;
 
-        GetSongbookFromLanguage();
-
-        loading = false;
-
-        StateHasChanged();
+        await GetSongbookFromLanguage();
     }
 
-    private void GetSongbookFromLanguage(Language language = Language.Portuguese)
+    private async Task GetSongbookFromLanguage(Language language = Language.Portuguese)
     {
         int languageCodeOffset = 1;
 
@@ -182,7 +214,9 @@
 
         _songbookTable.NavigateTo(Page.First);
 
-        StateHasChanged();
+        loading = false;
+
+        await InvokeAsync(StateHasChanged);
     }
 
     private bool SearchTableSong(SongDb song) => FilterFunc(song, songFilter);
@@ -202,27 +236,27 @@
 
     private async Task<IEnumerable<SongDb>> SearchSong(string value)
     {
-            await Task.Delay(5);
+        await Task.Delay(5);
 
-            CompareInfo compareInfo = CultureInfo.CurrentCulture.CompareInfo;
+        CompareInfo compareInfo = CultureInfo.CurrentCulture.CompareInfo;
 
-            if (string.IsNullOrEmpty(value)) {
-                songbookSearched = songbook.Songs.OrderBy( x => x.LanguageId).ThenBy(x => x.SingerName).ThenBy(x => x.Name);
-                return songbookSearched;
-            }
-
-            songbookSearched = songbook.Songs
-                .Where(
-                    x =>
-                    {
-                        int indexName = compareInfo.IndexOf(x.Name, value, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
-                        int indexSinger = compareInfo.IndexOf(x.SingerName, value, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
-
-                        return indexName >= 0  || indexSinger >= 0;
-                    })
-                .OrderBy( x => x.SingerName).ThenBy( x => x.Name );
-
+        if (string.IsNullOrEmpty(value)) {
+            songbookSearched = songbook.Songs.OrderBy( x => x.LanguageId).ThenBy(x => x.SingerName).ThenBy(x => x.Name);
             return songbookSearched;
+        }
+
+        songbookSearched = songbook.Songs
+            .Where(
+                x =>
+                {
+                    int indexName = compareInfo.IndexOf(x.Name, value, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
+                    int indexSinger = compareInfo.IndexOf(x.SingerName, value, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
+
+                    return indexName >= 0  || indexSinger >= 0;
+                })
+            .OrderBy( x => x.SingerName).ThenBy( x => x.Name );
+
+        return songbookSearched;
     }
 
     private TableGroupDefinition<SongDb> _groupDefinition = new()
@@ -254,6 +288,89 @@
                 return "Inglês";
             default:
                 return "Error";
+        }
+    }
+
+    private async Task OpenRequestDialog(SongDb song)
+    {
+        if (openingRequestDialog || requestInProgress)
+            return;
+
+        openingRequestDialog = true;
+        selectedSong = song;
+        requesterName = string.Empty;
+
+        try
+        {
+            requesterName = await jsRuntime.InvokeAsync<string?>("getRequesterName") ?? string.Empty;
+        }
+        catch (JSException ex)
+        {
+            Console.WriteLine($"Error reading requester name: {ex.Message}");
+            snackbar.Add("Não foi possível carregar o nome guardado.", Severity.Warning);
+        }
+        finally
+        {
+            openingRequestDialog = false;
+        }
+
+        requestDialogVisible = true;
+    }
+
+    private void CloseRequestDialog()
+    {
+        requestDialogVisible = false;
+    }
+
+    private bool IsRequestValid() =>
+        selectedSong is not null &&
+        !string.IsNullOrWhiteSpace(requesterName) &&
+        requesterName.Length <= AskDJRequest.MaxNameLength &&
+        $"{selectedSong.SingerName} - {selectedSong.Name}".Length <= AskDJRequest.MaxMessageLength;
+
+    private async Task ConfirmRequest()
+    {
+        if (requestInProgress || !IsRequestValid() || selectedSong is null)
+            return;
+
+        requestInProgress = true;
+        var name = requesterName.Trim();
+        var songRequest = new AskDJRequest
+        {
+            Name = name,
+            Message = $"{selectedSong.SingerName} - {selectedSong.Name}"
+        };
+
+        try
+        {
+            try
+            {
+                await jsRuntime.InvokeVoidAsync("setRequesterName", name);
+            }
+            catch (JSException ex)
+            {
+                Console.WriteLine($"Error saving requester name: {ex.Message}");
+                snackbar.Add("Não foi possível guardar o nome neste dispositivo.", Severity.Warning);
+            }
+
+            if (await askDJHandler.RequestASongAsync(songRequest))
+            {
+                requestDialogVisible = false;
+                snackbar.Add("Pedido de música enviado.", Severity.Success);
+            }
+            else
+            {
+                snackbar.Add("Não foi possível enviar o pedido de música. Tenta novamente.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error requesting song: {ex.Message}");
+            snackbar.Add("Não foi possível enviar o pedido de música. Tenta novamente.", Severity.Error);
+        }
+        finally
+        {
+            requestInProgress = false;
         }
     }
 }
