@@ -1,44 +1,41 @@
-﻿using Dapper;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using System.Data.SqlClient;
+using Music4LifeKaraokeSongbookApp.Data;
 
 namespace M4LKaraokeSongbook.Services
 {
-    public class DbHandler(IConfiguration configuration, IMemoryCache cache)
+    public class DbHandler(SongbookDbContext dbContext, IMemoryCache cache)
     {
-        private readonly IConfiguration _configuration = configuration;
+        private readonly SongbookDbContext _dbContext = dbContext;
         private readonly IMemoryCache _cache = cache;
 
         public async Task<Songbook?> GetSongsAsync()
         {
-            var songbook = new Songbook();
-
-                try
-                {
-                    songbook = await _cache.GetOrCreateAsync("Songbook", async (data) =>
-                    {
-                        data.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
-
-                        using SqlConnection connection = new(_configuration.GetConnectionString("DefaultConnection"));
-
-                        songbook.Songs = (await connection.QueryAsync<SongDb>(
-                            @"SELECT Songs.Id, Songs.Name, Singers.Name as SingerName, Songs.LanguageId, Songs.DateAdded
-                        FROM Songs
-                        INNER JOIN Singers
-                        ON Singers.ID = Songs.SingerID
-                        ORDER BY Songs.LanguageId, SingerName, Songs.Name")).AsList();
-
-                        return songbook;
-                    });
-
-                return songbook;
-
-            }
-            catch (Exception e)
+            return await _cache.GetOrCreateAsync("Songbook", async entry =>
             {
-                Console.WriteLine(e);
-                return songbook;
-            }
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
+
+                var songs = await _dbContext.Songs
+                    .Join(
+                        _dbContext.Singers,
+                        song => song.SingerId,
+                        singer => singer.Id,
+                        (song, singer) => new SongDb
+                        {
+                            Id = song.Id,
+                            Name = song.Name,
+                            SingerId = song.SingerId,
+                            SingerName = singer.Name,
+                            LanguageId = song.Language,
+                            DateAdded = song.DateAdded
+                        })
+                    .OrderBy(song => song.LanguageId)
+                    .ThenBy(song => song.SingerName)
+                    .ThenBy(song => song.Name)
+                    .ToListAsync();
+
+                return new Songbook { Songs = songs };
+            });
         }
     }
 }

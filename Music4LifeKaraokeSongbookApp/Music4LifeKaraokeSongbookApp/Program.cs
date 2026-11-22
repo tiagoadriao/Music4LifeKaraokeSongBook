@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using M4LKaraokeSongbook.Services;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Music4LifeKaraokeSongbookApp.Client.Services;
 using Music4LifeKaraokeSongbookApp.Components;
@@ -10,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
+
+builder.Services.AddDbContext<SongbookDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<DbHandler>();
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
