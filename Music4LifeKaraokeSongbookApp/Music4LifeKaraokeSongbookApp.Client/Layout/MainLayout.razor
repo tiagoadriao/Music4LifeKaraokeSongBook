@@ -40,9 +40,10 @@
     {
         if (firstRender)
         {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            StateHasChanged();
+            _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
         }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private readonly PaletteLight _paletteLight = new()
