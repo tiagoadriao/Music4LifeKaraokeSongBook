@@ -8,6 +8,7 @@ builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(build
 builder.Services.AddMudServices();
 
 builder.Services.AddTransient<IMusic4LifeSongbookService, Music4LifeSongbookProxyService>();
+builder.Services.AddTransient<IAskDJHandler, AskDJHandler>();
 
 builder.Services.AddTransient<Songbook>();
 
